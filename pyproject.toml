@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "skypro-project-bank-operations"
+version = "0.1.0"
+description = ""
+authors = ["Дмитрий Наумов <dmi3naumov@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.3"
+flake8 = "^7.1.2"
+mypy = "^1.15.0"
+black = "^25.1.0"
+isort = "^6.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
