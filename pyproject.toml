@@ -1,4 +1,4 @@
-[tool.poetry]
+    [tool.poetry]
 name = "skypro-project-bank-operations"
 version = "0.1.0"
 description = ""
@@ -12,6 +12,10 @@ flake8 = "^7.1.2"
 mypy = "^1.15.0"
 black = "^25.1.0"
 isort = "^6.0.1"
+openpyxl = "^3.1.5"
+dotenv = "^0.9.9"
+counter = "^1.0.0"
+pytest = "^8.3.5"
 
 
 [build-system]
