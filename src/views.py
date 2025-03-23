@@ -3,7 +3,6 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List
 
-
 from src.utils import (count_stat_by_card, find_exchange_rate,
                        find_stockmarket_rate, find_top_5_transactions,
                        good_something, read_json)
