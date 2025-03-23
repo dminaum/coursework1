@@ -87,13 +87,14 @@ def count_stat_by_card(
         total_spent = sum(
             float(transaction.get("amount_transaction_rub", 0) or 0)
             for transaction in data
-            if transaction["last_digits"] == card
+            if transaction.get("last_digits") == card
+            and float(transaction.get("amount_transaction_rub", 0) or 0) < 0
         )
 
         results.append(
             {
                 "last_digits": card if card else "Другие карты",
-                "total_spent": round(total_spent, 2),
+                "total_spent": round(-total_spent, 2),
                 "cashback": round(cashback, 2),
             }
         )
@@ -111,11 +112,32 @@ def find_top_5_transactions(data: List[Dict[str, str]]) -> List[Dict[str, str]]:
         return []
 
     try:
-        result = heapq.nlargest(
+        result = heapq.nsmallest(
             5, data, key=lambda x: float(x.get("amount_transaction_rub", 0))
         )
         logger.info("Топ-5 транзакций успешно найден.")
-        return result
+        wanted_keys = [
+            "operation_date",
+            "amount_transaction_rub",
+            "category",
+            "description",
+        ]
+        clean_result = [
+            {key: value for key, value in transaction.items() if key in wanted_keys}
+            for transaction in result
+        ]
+        for transaction in clean_result:
+            try:
+                if (
+                    "amount_transaction_rub" in transaction
+                    and float(transaction["amount_transaction_rub"]) < 0
+                ):
+                    transaction["amount_transaction_rub"] = str(
+                        round(abs(float(transaction["amount_transaction_rub"])))
+                    )
+            except (ValueError, TypeError):
+                pass
+        return clean_result
     except (ValueError, KeyError) as e:
         logger.error(f"Ошибка при поиске топ-5 транзакций: {e}")
         return []
@@ -150,7 +172,7 @@ def read_xlsx(file_path: str | Path) -> List[Dict]:
                     "operation_date": transaction.get("Дата операции", ""),
                     "payment_date": transaction.get("Дата платежа", ""),
                     "state": transaction.get("Статус", ""),
-                    "last_digits": transaction.get("Номер карты", ""),
+                    "last_digits": str(transaction.get("Номер карты", ""))[1:],
                     "amount_transaction": transaction.get("Сумма операции", 0),
                     "currency": transaction.get("Валюта операции", ""),
                     "amount_transaction_rub": transaction.get("Сумма платежа", 0),

@@ -24,9 +24,9 @@ class TestUtils(unittest.TestCase):
 
     def test_count_stat_by_card(self):
         transactions = [
-            {"last_digits": "1234", "cashback": 10, "amount_transaction_rub": 100},
-            {"last_digits": "1234", "cashback": 5, "amount_transaction_rub": 50},
-            {"last_digits": "5678", "cashback": 2, "amount_transaction_rub": 30},
+            {"last_digits": "1234", "cashback": 10, "amount_transaction_rub": -100},
+            {"last_digits": "1234", "cashback": 5, "amount_transaction_rub": -50},
+            {"last_digits": "5678", "cashback": 2, "amount_transaction_rub": -30},
         ]
         expected = [
             {"last_digits": "5678", "total_spent": 30, "cashback": 2},
@@ -51,7 +51,7 @@ class TestUtils(unittest.TestCase):
         ]
         top_5 = find_top_5_transactions(transactions)
         self.assertEqual(len(top_5), 5)
-        self.assertEqual(top_5[0]["amount_transaction_rub"], "-10")
+        self.assertEqual(top_5[0]["amount_transaction_rub"], "500")
 
     @patch("src.utils.requests.get")
     def test_find_exchange_rate(self, mock_get):

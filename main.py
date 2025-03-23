@@ -1,8 +1,9 @@
+from pathlib import Path
+
 from src.reports import spending_by_category
 from src.services import search_transactions_by_keyword
 from src.utils import read_xlsx
 from src.views import web_page
-from pathlib import Path
 
 MAIN_DIR = Path(__file__).resolve().parent
 PATH_XLSX = MAIN_DIR / "data" / "operations.xlsx"

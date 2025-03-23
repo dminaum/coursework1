@@ -77,7 +77,7 @@ class TestSortTransactionsKey(unittest.TestCase):
 
     @patch("src.services.logger")
     def test_logging_for_invalid_data(self, mock_logger):
-        """Проверяем логирование ошибок и предупреждений """
+        """Проверяем логирование ошибок и предупреждений"""
         search_transactions_by_keyword("invalid_data", "кафе")
         mock_logger.error.assert_called_with("Переданные данные не являются списком.")
 
